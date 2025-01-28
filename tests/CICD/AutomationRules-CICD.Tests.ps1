@@ -59,4 +59,9 @@ Describe "Automation Rules" -Tag "AutomationRules-CICD" {
         $Item = $CurrentItems | Where-Object { $_.name -match $id }
         $Item.properties.triggeringLogic.isEnabled | Should -Be $enabled
     }
+
+    It "Automation rule <id> passes PSRule validation" -ForEach $AutomationRulesDefinition {
+        $Item = $CurrentItems | Where-Object { $_.name -match $id }
+        $Item | Invoke-PSRule -Module 'PSRule.Rules.Azure' | Should -Be $true
+    }
 }

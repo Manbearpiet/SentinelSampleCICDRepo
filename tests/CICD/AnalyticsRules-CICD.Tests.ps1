@@ -68,4 +68,9 @@ Describe "Analytics Rules" -Tag "AnalyticsRules-CICD" {
         $Item = $CurrentItems | Where-Object { $_.id -match $id }
         $Item.properties.enabled | Should -Be $true
     }
+
+    It "Analytics rule <id> passes PSRule validation" -ForEach $AnalyticsRulesDefinition {
+        $Item = $CurrentItems | Where-Object { $_.id -match $id }
+        $Item | Invoke-PSRule -Module 'PSRule.Rules.Azure' | Should -Be $true
+    }
 }
